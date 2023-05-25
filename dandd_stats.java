@@ -41,9 +41,12 @@
 }*/
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class DnDStatsGUI {
-    public static void main(String[] args) {
+    private static int finalSumod;
+    private static int[] stats() {
         int[] tabella = new int[6];
         int[] dado = new int[4];
         int minore = 6, sumod = 0;
@@ -76,30 +79,67 @@ public class DnDStatsGUI {
             }
 
             minore = 6;
-            giatolto = false;
             sumod += mod;
             System.out.println("Le stats sono: " + tabella[j] + " e i modificatori sono: " + mod);
         }
         System.out.println("somma dei modificatori: " + sumod);
-
+        finalSumod = sumod;
+        return tabella;
+    }
+    public static void main(String[] args) {
         // Creazione finestra grafica
         JFrame frame = new JFrame("D&D Stats");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Creazione e configurazione del pannello
         JPanel panel = new JPanel();
-        panel.add(new JLabel("Le stats sono: " + tabella[0] + ", " + tabella[1] + ", " + tabella[2] + ", " + tabella[3]
-                + ", " + tabella[4] + ", " + tabella[5]));
-        panel.add(new JLabel("I modificatori sono: " + ((tabella[0] - 10) / 2) + ", " + ((tabella[1] - 10) / 2) + ", "
-                + ((tabella[2] - 10) / 2) + ", " + ((tabella[3] - 10) / 2) + ", " + ((tabella[4] - 10) / 2) + ", "
-                + ((tabella[5] - 10) / 2)));
-        panel.add(new JLabel("Somma dei modificatori: " + sumod));
-
-        // Aggiunta del pannello alla finestra
+        JPanel ButtonPanel = new JPanel();
+        JButton start = new JButton("Avvia");
+        JButton riprova = new JButton("Riprova");
+        start.setBounds(150,150,95,30);
+        riprova.setBounds(125, 150, 95, 30);
+        frame.add(start);
+        int[] tabella = stats();
+        start.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Creazione e configurazione del pannello
+                panel.add(new JLabel("Ecco i risultati: "));
+                panel.add(new JLabel(tabella[0] + " con corrispettivo modificatore: " + ((tabella[0] - 10) / 2)));
+                panel.add(new JLabel(tabella[1] + " con corrispettivo modificatore: " + ((tabella[1] - 10) / 2)));
+                panel.add(new JLabel(tabella[2] + " con corrispettivo modificatore: " + ((tabella[2] - 10) / 2)));
+                panel.add(new JLabel(tabella[3] + " con corrispettivo modificatore: " + ((tabella[3] - 10) / 2)));
+                panel.add(new JLabel(tabella[4] + " con corrispettivo modificatore: " + ((tabella[4] - 10) / 2)));
+                panel.add(new JLabel(tabella[5] + " con corrispettivo modificatore: " + ((tabella[5] - 10) / 2)));
+                panel.add(new JLabel("Somma dei modificatori: " + finalSumod));
+                panel.add(ButtonPanel);
+                frame.getContentPane().remove(start);
+                frame.setSize(350, 300);
+            }
+        });
+        riprova.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                stats();
+                int[] tabella = stats();
+                panel.removeAll();
+                panel.add(new JLabel("Ecco i risultati: "));
+                panel.add(new JLabel(tabella[0] + " con corrispettivo modificatore: " + ((tabella[0] - 10) / 2)));
+                panel.add(new JLabel(tabella[1] + " con corrispettivo modificatore: " + ((tabella[1] - 10) / 2)));
+                panel.add(new JLabel(tabella[2] + " con corrispettivo modificatore: " + ((tabella[2] - 10) / 2)));
+                panel.add(new JLabel(tabella[3] + " con corrispettivo modificatore: " + ((tabella[3] - 10) / 2)));
+                panel.add(new JLabel(tabella[4] + " con corrispettivo modificatore: " + ((tabella[4] - 10) / 2)));
+                panel.add(new JLabel(tabella[5] + " con corrispettivo modificatore: " + ((tabella[5] - 10) / 2)));
+                panel.add(new JLabel("Somma dei modificatori: " + finalSumod));
+                panel.revalidate();
+                panel.repaint();
+                panel.add(ButtonPanel);
+            }
+        });
+        ButtonPanel.add(riprova);
         frame.getContentPane().add(panel);
-
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Impostazione delle dimensioni e visualizzazione della finestra
-        frame.setSize(300, 200);
+        frame.setSize(400, 300);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
