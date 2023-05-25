@@ -63,12 +63,16 @@ public class DnDStatsGUI {
                 // Creazione e configurazione del pannello
                 panel.removeAll();
                 panel.add(new JLabel("Ecco i risultati:     "));
-                panel.add(new JLabel(tabella[0] + " con corrispettivo modificatore: " + ((tabella[0] - 10) / 2)));
+                for(int i = 0; i < 6; i++) {
+                    panel.add(new JLabel(tabella[i] + " con corrispettivo modificatore: " + ((tabella[i] -10) / 2)));
+                }
+                /*panel.add(new JLabel(tabella[0] + " con corrispettivo modificatore: " + ((tabella[0] - 10) / 2)));
                 panel.add(new JLabel(tabella[1] + " con corrispettivo modificatore: " + ((tabella[1] - 10) / 2)));
                 panel.add(new JLabel(tabella[2] + " con corrispettivo modificatore: " + ((tabella[2] - 10) / 2)));
                 panel.add(new JLabel(tabella[3] + " con corrispettivo modificatore: " + ((tabella[3] - 10) / 2)));
                 panel.add(new JLabel(tabella[4] + " con corrispettivo modificatore: " + ((tabella[4] - 10) / 2)));
                 panel.add(new JLabel(tabella[5] + " con corrispettivo modificatore: " + ((tabella[5] - 10) / 2)));
+                */
                 panel.add(new JLabel("Somma dei modificatori: " + finalSumod));
                 if(finalSumod < 8) {
                     panel.add(new JLabel("La somma dei modificatori non è abbastanza alta"));
@@ -86,12 +90,16 @@ public class DnDStatsGUI {
                 int[] tabella = stats();
                 panel.removeAll();
                 panel.add(new JLabel("Ecco i risultati:     "));
-                panel.add(new JLabel(tabella[0] + " con corrispettivo modificatore: " + ((tabella[0] - 10) / 2)));
+                for(int i = 0; i < 6; i++) {
+                    panel.add(new JLabel(tabella[i] + " con corrispettivo modificatore: " + ((tabella[i] -10) / 2)));
+                }
+                /*panel.add(new JLabel(tabella[0] + " con corrispettivo modificatore: " + ((tabella[0] - 10) / 2)));
                 panel.add(new JLabel(tabella[1] + " con corrispettivo modificatore: " + ((tabella[1] - 10) / 2)));
                 panel.add(new JLabel(tabella[2] + " con corrispettivo modificatore: " + ((tabella[2] - 10) / 2)));
                 panel.add(new JLabel(tabella[3] + " con corrispettivo modificatore: " + ((tabella[3] - 10) / 2)));
                 panel.add(new JLabel(tabella[4] + " con corrispettivo modificatore: " + ((tabella[4] - 10) / 2)));
                 panel.add(new JLabel(tabella[5] + " con corrispettivo modificatore: " + ((tabella[5] - 10) / 2)));
+                */
                 panel.add(new JLabel("Somma dei modificatori: " + finalSumod));
                 if(finalSumod < 8) {
                     panel.add(new JLabel("La somma dei modificatori non è abbastanza alta"));
