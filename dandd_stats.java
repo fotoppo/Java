@@ -1,46 +1,5 @@
-/*public class dandd_stats {
-    public static void main(String[] args) {
-        int[] tabella = new int[6];
-        int[] dado = new int[4];
-        int minore = 6, sumod = 0;
-        boolean giatolto;
-
-        for (int j = 0; j < tabella.length; j++) {
-            int risdado = 0;
-            int mod = 0;
-            giatolto = false;
-
-            for (int i = 0; i < dado.length; i++) {
-                dado[i] = (int) (Math.random() * 6) + 1;
-                if (minore > dado[i]) {
-                    minore = dado[i];
-                }
-            }
-
-            for (int i = 0; i < dado.length; i++) {
-                if (dado[i] == minore && !giatolto) {
-                    dado[i] = 0;
-                    giatolto = true;
-                }
-                risdado += dado[i];
-            }
-
-            tabella[j] = risdado;
-
-            if (risdado >= 4 && risdado <= 19) {
-                mod = (risdado - 10) / 2;
-            }
-
-            minore = 6;
-            giatolto = false;
-            sumod += mod;
-            System.out.println("Le stats sono: " + tabella[j] + " e i modificatori sono: " + mod);
-        }
-        System.out.println("somma dei modificatori: " + sumod);
-    }
-}*/
-
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -91,6 +50,7 @@ public class DnDStatsGUI {
         JFrame frame = new JFrame("D&D Stats");
         JPanel panel = new JPanel();
         JPanel ButtonPanel = new JPanel();
+        panel.add(new JLabel("Calcolatore statistiche Dungeons & Dragons!!!"));
         JButton start = new JButton("Avvia");
         JButton riprova = new JButton("Riprova");
         start.setBounds(150,150,95,30);
@@ -101,7 +61,8 @@ public class DnDStatsGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Creazione e configurazione del pannello
-                panel.add(new JLabel("Ecco i risultati: "));
+                panel.removeAll();
+                panel.add(new JLabel("Ecco i risultati:     "));
                 panel.add(new JLabel(tabella[0] + " con corrispettivo modificatore: " + ((tabella[0] - 10) / 2)));
                 panel.add(new JLabel(tabella[1] + " con corrispettivo modificatore: " + ((tabella[1] - 10) / 2)));
                 panel.add(new JLabel(tabella[2] + " con corrispettivo modificatore: " + ((tabella[2] - 10) / 2)));
@@ -109,9 +70,13 @@ public class DnDStatsGUI {
                 panel.add(new JLabel(tabella[4] + " con corrispettivo modificatore: " + ((tabella[4] - 10) / 2)));
                 panel.add(new JLabel(tabella[5] + " con corrispettivo modificatore: " + ((tabella[5] - 10) / 2)));
                 panel.add(new JLabel("Somma dei modificatori: " + finalSumod));
+                if(finalSumod < 8) {
+                    panel.add(new JLabel("La somma dei modificatori non è abbastanza alta"));
+                    panel.add(new JLabel("Riprovare!!!"));
+                }
                 panel.add(ButtonPanel);
                 frame.getContentPane().remove(start);
-                frame.setSize(350, 300);
+                frame.setSize(360, 300);
             }
         });
         riprova.addActionListener(new ActionListener() {
@@ -120,7 +85,7 @@ public class DnDStatsGUI {
                 stats();
                 int[] tabella = stats();
                 panel.removeAll();
-                panel.add(new JLabel("Ecco i risultati: "));
+                panel.add(new JLabel("Ecco i risultati:     "));
                 panel.add(new JLabel(tabella[0] + " con corrispettivo modificatore: " + ((tabella[0] - 10) / 2)));
                 panel.add(new JLabel(tabella[1] + " con corrispettivo modificatore: " + ((tabella[1] - 10) / 2)));
                 panel.add(new JLabel(tabella[2] + " con corrispettivo modificatore: " + ((tabella[2] - 10) / 2)));
@@ -128,6 +93,10 @@ public class DnDStatsGUI {
                 panel.add(new JLabel(tabella[4] + " con corrispettivo modificatore: " + ((tabella[4] - 10) / 2)));
                 panel.add(new JLabel(tabella[5] + " con corrispettivo modificatore: " + ((tabella[5] - 10) / 2)));
                 panel.add(new JLabel("Somma dei modificatori: " + finalSumod));
+                if(finalSumod < 8) {
+                    panel.add(new JLabel("La somma dei modificatori non è abbastanza alta"));
+                    panel.add(new JLabel("Riprovare!!!"));
+                }
                 panel.revalidate();
                 panel.repaint();
                 panel.add(ButtonPanel);
