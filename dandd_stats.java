@@ -2,9 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class DnDStatsGUI {
     private static int finalSumod;
+    private static Random random = new Random();
+    private static int tableCounter = 0;
     private static int[] stats() {
         int[] tabella = new int[6];
         int[] dado = new int[4];
@@ -17,7 +20,7 @@ public class DnDStatsGUI {
             giatolto = false;
 
             for (int i = 0; i < dado.length; i++) {
-                dado[i] = (int) (Math.random() * 6) + 1;
+                dado[i] = random.nextInt(6) + 1;
                 if (minore > dado[i]) {
                     minore = dado[i];
                 }
@@ -30,13 +33,10 @@ public class DnDStatsGUI {
                 }
                 risdado += dado[i];
             }
-
             tabella[j] = risdado;
-
             if (risdado >= 4 && risdado <= 19) {
                 mod = (risdado - 10) / 2;
             }
-
             minore = 6;
             sumod += mod;
             System.out.println("Le stats sono: " + tabella[j] + " e i modificatori sono: " + mod);
@@ -46,76 +46,92 @@ public class DnDStatsGUI {
         return tabella;
     }
     public static void main(String[] args) {
-        // Creazione finestra grafica
         JFrame frame = new JFrame("D&D Stats");
-        JPanel panel = new JPanel();
-        JPanel ButtonPanel = new JPanel();
-        panel.add(new JLabel("Calcolatore statistiche Dungeons & Dragons!!!"));
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+        JPanel titlePanel = new JPanel();
+        titlePanel.add(new JLabel("Calcolatore statistiche Dungeons & Dragons 3.5!!!"));
+        mainPanel.add(titlePanel);
+
+        JTextArea resultArea = new JTextArea(10, 30);
+        resultArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(resultArea);
+        mainPanel.add(scrollPane);
+
         JButton start = new JButton("Avvia");
         JButton riprova = new JButton("Riprova");
-        start.setBounds(150,150,95,30);
-        riprova.setBounds(125, 150, 95, 30);
-        frame.add(start);
-        int[] tabella = stats();
+        riprova.setVisible(false);
         start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Creazione e configurazione del pannello
-                panel.removeAll();
-                panel.add(new JLabel("Ecco i risultati:     "));
-                for(int i = 0; i < 6; i++) {
-                    panel.add(new JLabel(tabella[i] + " con corrispettivo modificatore: " + ((tabella[i] -10) / 2)));
+                resultArea.setText("Ecco i risultati:\n");
+                int[] tabella = stats();
+                for (int i = 0; i < 6; i++) {
+                    resultArea.append(tabella[i] + " con corrispettivo modificatore: " + ((tabella[i] - 10) / 2) + "\n");
                 }
-                /*panel.add(new JLabel(tabella[0] + " con corrispettivo modificatore: " + ((tabella[0] - 10) / 2)));
-                panel.add(new JLabel(tabella[1] + " con corrispettivo modificatore: " + ((tabella[1] - 10) / 2)));
-                panel.add(new JLabel(tabella[2] + " con corrispettivo modificatore: " + ((tabella[2] - 10) / 2)));
-                panel.add(new JLabel(tabella[3] + " con corrispettivo modificatore: " + ((tabella[3] - 10) / 2)));
-                panel.add(new JLabel(tabella[4] + " con corrispettivo modificatore: " + ((tabella[4] - 10) / 2)));
-                panel.add(new JLabel(tabella[5] + " con corrispettivo modificatore: " + ((tabella[5] - 10) / 2)));
-                */
-                panel.add(new JLabel("Somma dei modificatori: " + finalSumod));
-                if(finalSumod < 8) {
-                    panel.add(new JLabel("La somma dei modificatori non è abbastanza alta"));
-                    panel.add(new JLabel("Riprovare!!!"));
+                resultArea.append("Somma dei modificatori: " + finalSumod + "\n");
+                resultArea.append("\n");
+                if (finalSumod < 8) {
+                    resultArea.append("La somma dei modificatori non è abbastanza alta\n");
+                    resultArea.append("Riprovare!!!\n");
+                } else if (tableCounter < 3) { // Limita il numero massimo di schede a 3
+                    JPanel tablePanel = new JPanel();
+                    tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
+                    for (int i = 0; i < 6; i++) {
+                        tablePanel.add(new JLabel(tabella[i] + " con corrispettivo modificatore: " + ((tabella[i] - 10) / 2)));
+                    }
+                    tabbedPane.addTab("Risultato " + (tableCounter + 1), tablePanel);
+                    tableCounter++;
                 }
-                panel.add(ButtonPanel);
-                frame.getContentPane().remove(start);
-                frame.setSize(360, 300);
+                start.setVisible(false);
+                riprova.setVisible(true);
             }
         });
         riprova.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                stats();
+                resultArea.setText("Ecco i risultati:\n");
                 int[] tabella = stats();
-                panel.removeAll();
-                panel.add(new JLabel("Ecco i risultati:     "));
-                for(int i = 0; i < 6; i++) {
-                    panel.add(new JLabel(tabella[i] + " con corrispettivo modificatore: " + ((tabella[i] -10) / 2)));
+                for (int i = 0; i < 6; i++) {
+                    resultArea.append(tabella[i] + " con corrispettivo modificatore: " + ((tabella[i] - 10) / 2) + "\n");
                 }
-                /*panel.add(new JLabel(tabella[0] + " con corrispettivo modificatore: " + ((tabella[0] - 10) / 2)));
-                panel.add(new JLabel(tabella[1] + " con corrispettivo modificatore: " + ((tabella[1] - 10) / 2)));
-                panel.add(new JLabel(tabella[2] + " con corrispettivo modificatore: " + ((tabella[2] - 10) / 2)));
-                panel.add(new JLabel(tabella[3] + " con corrispettivo modificatore: " + ((tabella[3] - 10) / 2)));
-                panel.add(new JLabel(tabella[4] + " con corrispettivo modificatore: " + ((tabella[4] - 10) / 2)));
-                panel.add(new JLabel(tabella[5] + " con corrispettivo modificatore: " + ((tabella[5] - 10) / 2)));
-                */
-                panel.add(new JLabel("Somma dei modificatori: " + finalSumod));
-                if(finalSumod < 8) {
-                    panel.add(new JLabel("La somma dei modificatori non è abbastanza alta"));
-                    panel.add(new JLabel("Riprovare!!!"));
+                resultArea.append("Somma dei modificatori: " + finalSumod + "\n");
+                resultArea.append("\n");
+                if (finalSumod < 8) {
+                    resultArea.append("La somma dei modificatori non è abbastanza alta\n");
+                    resultArea.append("Riprovare!!!\n");
+                } else if (tableCounter < 3) { // Limita il numero massimo di schede a 3
+                    JPanel tablePanel = new JPanel();
+                    tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
+                    for (int i = 0; i < 6; i++) {
+                        tablePanel.add(new JLabel(tabella[i] + " con corrispettivo modificatore: " + ((tabella[i] - 10) / 2)));
+                    }
+                    tabbedPane.addTab("Risultato " + (tableCounter + 1), tablePanel);
+                    tableCounter++;
+                    if (tableCounter == 3) {
+                        riprova.setVisible(false);
+                        resultArea.append("Scegliere uno dei 3 risultati");
+                    }
                 }
-                panel.revalidate();
-                panel.repaint();
-                panel.add(ButtonPanel);
             }
         });
-        ButtonPanel.add(riprova);
-        frame.getContentPane().add(panel);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(start);
+        buttonPanel.add(riprova);
+
+        mainPanel.add(buttonPanel);
+
+        tabbedPane.addTab("Calcolatore", mainPanel);
+
+        frame.getContentPane().add(tabbedPane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // Impostazione delle dimensioni e visualizzazione della finestra
-        frame.setSize(400, 300);
-        frame.setResizable(false);
+        frame.setSize(500, 500);
+        frame.setResizable(true);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
